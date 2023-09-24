@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "promptdesk"
+version = "0.1.4"
+description = "PromptDesk python SDK."
+authors = ["PromptDesk <feedback@promptdesk.ai>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+requests = "^2.31.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
