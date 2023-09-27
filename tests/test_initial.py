@@ -20,26 +20,15 @@ def test_prompt_without_variables():
     assert "you" in result
 
 #should generate an error because the plot variable is missing
-def test_prompt_with_variable():
-    with pytest.raises(ValueError) as e:
-
-        result = promptdesk.generate("short-story-generator", {
-            "setting": "a dark and stormy night",
-            "character": "a mysterious stranger"
-        })
-
-        assert "A 'plot' value is required." in str(e.value)
-
-#should generate an error because the plot variable is missing
-def test_prompt_with_variable():
-    with pytest.raises(ValueError) as e:
+def test_prompt_with_missing_variable():
+    with pytest.raises(Exception) as e:
 
         result = promptdesk.generate("short-story-generator", {
             "setting": "a dark and stormy night",
             "plot": "knock on the door"
         })
 
-        assert "A 'character' value is required." in str(e.value)
+    assert 'Variable "character" not found in prompt.' in str(e.value)
 
 def test_prompt_with_variable():
     #make sure that a non-variable prompt is generated correctly

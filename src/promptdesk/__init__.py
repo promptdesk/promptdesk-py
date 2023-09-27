@@ -45,22 +45,17 @@ def generate(prompt_name, variables=None, object=False):
     try:
         response = requests.post(f"{SERVICE_URL}/api/magic/generate", data=json.dumps(payload), headers=headers)
         
-        # Check for HTTP errors
-        if response.status_code != 200:
-            print("Failed:", response.status_code, response.json()['error'])
-            return
-        
         generated_string = response.json()['data']['message']['content']
 
         if object:
             return convert_to_obj(generated_string)
         else:
             return generated_string
-        
+
     except requests.RequestException as e:
         # Handle connection errors
-        print("Failed to connect:", e)
-        
+        raise Exception("Failed to connect:", e)
+
     except Exception as e:
         # Handle other types of exceptions
-        print("An error occurred:", e)
+        raise Exception("An error occurred:", response.json()['error'])
