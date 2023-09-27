@@ -51,3 +51,13 @@ def test_prompt_with_variable():
     print(result)
     #check if result contains more than 20 words
     assert len(result.split()) > 20
+
+
+def test_convert_to_obj():
+
+    assert promptdesk.convert_to_obj("{'a': 1}") == {'a': 1}
+    assert promptdesk.convert_to_obj("[1, 2, 3]") == [1, 2, 3]
+    assert promptdesk.convert_to_obj("     [1, 2, 3]   ") == [1, 2, 3]
+    assert promptdesk.convert_to_obj("{\"a\": 1}") == {'a': 1}
+    assert promptdesk.convert_to_obj('''{&apos;a&apos;\n\n\n
+                                     : 1}''') == {'a': 1}
