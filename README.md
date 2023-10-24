@@ -14,22 +14,6 @@ pip install promptdesk
 
 ## Usage
 
-### Pinging the Service
-
-Make sure the PromptDesk service is running by pinging it:
-
-```python
-import promptdesk
-
-promptdesk.SERVICE_URL = "http://localhost:4000"
-
-pong = promptdesk.ping()
-
-print(pong)  # Should print "pong"
-```
-
-The SERVICE_URL defaults to "http://localhost:4000", so you can omit this line if you are running the service locally.
-
 ### Generating Text
 
 You can generate text by using the generate method.
@@ -45,6 +29,31 @@ print(yoda_response)
 Sample output:
 ```bash
 Hmm, hello there, I am. Fine, I am. And you?
+```
+
+### Pinging the Service
+
+Make sure the PromptDesk service is running by pinging it:
+
+```python
+import promptdesk
+
+pong = promptdesk.ping()
+
+print(pong)  # Should print "pong"
+```
+
+The service defaults to the PromptDesk API, if you are running your own server, you can specify the URL:
+
+```python
+
+import promptdesk
+
+promptdesk.SERVICE_URL = "http://localhost:4000"
+
+pong = promptdesk.ping()
+
+print(pong)  # Should print "pong"
 ```
 
 ### Generating Text with Variables
