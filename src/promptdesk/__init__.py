@@ -1,6 +1,7 @@
 import requests
 import json
 import html
+import uuid
 
 PUBLIC_SERVICE_URL = "https://app.promptdesk.ai"
 SERVICE_URL = None
@@ -18,9 +19,10 @@ def ping():
         print("Failed:", response.status_code, response.text)
 
 def convert_to_obj(string):
+    if type(string) == dict or type(string) == list:
+        return string
     string = html.unescape(string)
     string = string.strip()
-    last = string[-1]
     try:
         try:
             r = json.loads(string)
@@ -31,11 +33,29 @@ def convert_to_obj(string):
     except:
         return None
 
-def generate(prompt_name, variables=None, object=False):
+def list():
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + API_KEY
+    }
+    response = requests.get(f"{SERVICE_URL}/api/prompts", headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception("Failed:", response.status_code, response.text)
+
+def generate(prompt_name, variables=None, chain=None, object=False):
+
     payload = {
         "prompt_name": prompt_name,
         "variables": variables or {}
     }
+
+    if chain:
+        payload["chain"] = {
+            "uuid": chain.uuid,
+            "name": chain.name
+        }
 
     if API_KEY == None:
         raise Exception("API_KEY is not set")
@@ -73,3 +93,9 @@ def generate(prompt_name, variables=None, object=False):
     except Exception as e:
         # Handle other types of exceptions
         raise Exception("An error occurred:", response.json())
+
+class Chain:
+    def __init__(self, name) -> None:
+        self.uuid = str(uuid.uuid4())
+        self.name = name
+        pass
