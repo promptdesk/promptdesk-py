@@ -50,7 +50,7 @@ pd = PromptDesk(
     api_key = "YOUR_PROMPTDESK_API_KEY"
 )
 
-story = promptdesk.generate("short-story", {
+story = pd.generate("short-story", {
     "setting": "dark and stormy night",
     "character": "lonely farmer",
     "plot": "visited by a stranger"
