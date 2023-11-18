@@ -80,3 +80,9 @@ The prompt name you use in the generate method must match the name of the prompt
 #### Logs
 
 You can view the logs of your prompt calls in the application. If you are having trouble, check the logs to see if there are any errors.
+
+## Important Links
+- [Documentation](https://promptdesk.ai/docs/)
+- [GitHub - Application](https://github.com/promptdesk/promptdesk)
+- [GitHub - Python PIP](https://github.com/promptdesk/promptdesk-py)
+- [Docker Hub](https://hub.docker.com/r/promptdesk/promptdesk)
