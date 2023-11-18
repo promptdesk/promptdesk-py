@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "promptdesk"
-version = "0.1.8"
+version = "0.1.9"
 description = "PromptDesk python SDK."
 authors = ["PromptDesk <feedback@promptdesk.ai>"]
 license = "MIT License"

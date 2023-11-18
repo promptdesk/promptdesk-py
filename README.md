@@ -1,78 +1,82 @@
-# PromptDesk Python SDK
+![Alt Text](./readme_images/github_banner.png)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://hub.docker.com/r/promptdesk/promptdesk)
+[![PyPI version](https://badge.fury.io/py/promptdesk.svg)](https://badge.fury.io/py/promptdesk)
 
-## Overview
+## What is PromptDesk?
 
-PromptDesk Python SDK is a pip package designed to facilitate the dynamic integration, development, optimization, and assessment of prompts and large language models (LLMs) within your Python applications.
+PromptDesk is 100% free and open-source tool designed to facilitate the creation, organization, integration, and evaluation of prompts, prompt-based applications and Large Language Models (LLMs).
 
-## Installation
+![Alt Text](./readme_images/flowchart_banner_py.jpeg)
+
+#### PrompDesk Python PIP Package
+
+The PrompDesk Python PIP Package is an ultra-lightweight library to call and process prompts remotely or locally.
+- Generate: Call prompts remotely or locally.
+- JSON: Convert prompts to JSON format.
+- Variables: Add variables to prompts.
+- Data validation: Validate prompt data.
+
+#### PrompDesk GUI
+
+The PromptDesk GUI is an OpenAI playground clone that makes it easy to build and organize prompt-based applications.
+- Workspace: Build and test completion, code and chat prompts with variables.
+- Prompts: Create and organize prompts.
+- Models: Create, edit, test and add unlimited LLM models.
+- Logs: View, analyze and export prompt calls.
+- Settings: Configure variables and API keys.
+
+We recommend starting with the [Quickstart](https://promptdesk.ai/docs/quickstart) guide. You can also jump straight to the [Build Prompts](https://promptdesk.ai/docs/building-prompts/) or start integrating prompts in python with [Integrate Prompts](https://promptdesk.ai/docs/python-sdk/) guides.
+
+## Quickstart
+
+### Install PromptDesk
 
 To install PromptDesk, use pip:
 
-```bash
+```python
 pip install promptdesk
 ```
 
-## Usage
+### Usage
 
-### Generating Text
-
-You can generate text by using the generate method.
+You can call the prompt you build in the application by using the generate method.
 
 ```python
-import promptdesk
+from promptdesk import PromptDesk
 
-yoda_response = promptdesk.generate("yoda-test")
+pd = PromptDesk(
+    #defaults to os.environ.get("PROMPTDESK_API_KEY")
+    api_key = "YOUR_PROMPTDESK_API_KEY"
+)
 
-print(yoda_response)
-```
-
-Sample output:
-```bash
-Hmm, hello there, I am. Fine, I am. And you?
-```
-
-### Pinging the Service
-
-Make sure the PromptDesk service is running by pinging it:
-
-```python
-import promptdesk
-
-pong = promptdesk.ping()
-
-print(pong)  # Should print "pong"
-```
-
-The service defaults to the PromptDesk API, if you are running your own server, you can specify the URL:
-
-```python
-
-import promptdesk
-
-promptdesk.SERVICE_URL = "http://localhost:4000"
-
-pong = promptdesk.ping()
-
-print(pong)  # Should print "pong"
-```
-
-### Generating Text with Variables
-
-You can generate text with variables by passing a dictionary of variables as the second argument to the generate method.
-
-```python
-import promptdesk
-
-story = promptdesk.generate("short-story-generator", {
-    "setting": "A dark and stormy night",
-    "character": "A lonely farmer",
-    "plot": "A farmer is visited by a stranger"
+story = promptdesk.generate("short-story", {
+    "setting": "dark and stormy night",
+    "character": "lonely farmer",
+    "plot": "visited by a stranger"
 })
 
 print(story)
 ```
 
-Sample output:
-```bash
-On a dark and stormy night, a lonely farmer was tending to his crops, the sound of thunder echoing through the desolate fields. As lightning flashed, illuminating the eerie landscape, a mysterious stranger knocked on the farmers door seeking refuge from the tempestuous night. The farmer, wary but compassionate, welcomed the stranger, unknowingly inviting a twist of fate into his secluded existence.
+You can find your API key in the application under Organization Information > API Key.
+
+### Troubleshooting
+
+#### Testing the Service
+
+You can test the service endpoint by pinging it:
+
+```python
+print(pd.ping())
 ```
+
+A successful ping will return "pong".
+
+#### Prompt name
+
+The prompt name you use in the generate method must match the name of the prompt you created in the application.
+
+#### Logs
+
+You can view the logs of your prompt calls in the application. If you are having trouble, check the logs to see if there are any errors.

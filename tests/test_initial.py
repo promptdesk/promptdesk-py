@@ -1,4 +1,4 @@
-import promptdesk as pd
+from promptdesk import PromptDesk, Chain
 import importlib.util
 import pytest
 import dotenv
@@ -6,25 +6,31 @@ import os
 
 dotenv.load_dotenv()
 
+pd_standard = PromptDesk()
+pd = PromptDesk(
+    service_url="http://localhost:4000",
+    api_key=os.getenv("PROMPTDESK_API_KEY")
+)
+
 def test_import():
     #make sure that the module is imported
     assert importlib.util.find_spec("promptdesk") is not None
 
 def test_default_service_url():
-    assert pd.SERVICE_URL == "https://app.promptdesk.ai"
+    assert pd_standard.service_url == "https://app.promptdesk.ai"
 
 def test_ping():
     #make sure that the service is running and responding to ping
     assert pd.ping() == "pong"
 
 def test_prompt_without_api_key():
+    pd_no_key = PromptDesk()
     with pytest.raises(Exception) as e:
-        result = pd.generate("yoda-test")
+        result = pd_no_key.generate("yoda-test")
         assert "you" in result
-    assert 'API_KEY is not set' in str(e.value)
+    assert 'error' in str(e.value)
 
 def test_prompt_with_api_key():
-    pd.API_KEY = os.getenv("API_KEY")
     result = pd.generate("yoda-test")
     assert "you" in result
 
@@ -64,14 +70,14 @@ def test_convert_to_obj():
     assert pd.convert_to_obj("     [1, 2   , 3    ]   ") == [1, 2, 3]
 
 def test_init_chain():
-    chain = pd.Chain("test-chain")
-    assert chain.name == "test-chain"
-    assert chain.uuid != None
-    assert "-" in chain.uuid
+    pd.chain = Chain("test-chain")
+    assert pd.chain.name == "test-chain"
+    assert pd.chain.uuid != None
+    assert "-" in pd.chain.uuid
 
 def test_prompt_with_chain():
-    chain = pd.Chain("test-chain")
-    result = pd.generate("yoda-test", chain=chain)
+    pd.chain = Chain("test-chain")
+    result = pd.generate("yoda-test")
     assert "you" in result
-    assert chain.uuid != None
-    assert "-" in chain.uuid
+    assert pd.chain.uuid != None
+    assert "-" in pd.chain.uuid
