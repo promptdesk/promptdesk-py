@@ -9,15 +9,7 @@ PromptDesk is 100% free and open-source tool designed to facilitate the creation
 
 ![Alt Text](./readme_images/flowchart_banner_py.jpeg)
 
-#### PrompDesk Python PIP Package
-
-The PrompDesk Python PIP Package is an ultra-lightweight library to call and process prompts remotely or locally.
-- Generate: Call prompts remotely or locally.
-- JSON: Convert prompts to JSON format.
-- Variables: Add variables to prompts.
-- Data validation: Validate prompt data.
-
-#### PrompDesk GUI
+### PrompDesk Manager
 
 The PromptDesk GUI is an OpenAI playground clone that makes it easy to build and organize prompt-based applications.
 - Workspace: Build and test completion, code and chat prompts with variables.
@@ -25,6 +17,14 @@ The PromptDesk GUI is an OpenAI playground clone that makes it easy to build and
 - Models: Create, edit, test and add unlimited LLM models.
 - Logs: View, analyze and export prompt calls.
 - Settings: Configure variables and API keys.
+
+### PromptDesk Python SDK
+
+The PrompDesk Python PIP Package is an ultra-lightweight library to call and process prompts remotely or locally.
+- Generate: Call prompts remotely or locally.
+- JSON: Convert prompts to JSON format.
+- Variables: Add variables to prompts.
+- Data validation: Validate prompt data.
 
 We recommend starting with the [Quickstart](https://promptdesk.ai/docs/quickstart) guide. You can also jump straight to the [Build Prompts](https://promptdesk.ai/docs/building-prompts/) or start integrating prompts in python with [Integrate Prompts](https://promptdesk.ai/docs/python-sdk/) guides.
 
@@ -82,7 +82,12 @@ The prompt name you use in the generate method must match the name of the prompt
 You can view the logs of your prompt calls in the application. If you are having trouble, check the logs to see if there are any errors.
 
 ## Important Links
+
+For more information about PromptDesk, please refer to the following resources:
+
 - [Documentation](https://promptdesk.ai/docs/)
-- [GitHub - Application](https://github.com/promptdesk/promptdesk)
-- [GitHub - Python PIP](https://github.com/promptdesk/promptdesk-py)
-- [Docker Hub](https://hub.docker.com/r/promptdesk/promptdesk)
+- [Application GitHub Repository](https://github.com/promptdesk/promptdesk)
+- [Python GitHub Repository](https://github.com/promptdesk/promptdesk-py)
+- [PyPI Package](https://pypi.org/project/promptdesk/)
+- [Docker Hub](https://hub.docker.com/r/promptdesk/promptdesk/)
+- [Official Website](https://promptdesk.ai/)

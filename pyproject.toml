@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "promptdesk"
-version = "0.1.9"
+version = "0.2.0"
 description = "PromptDesk python SDK."
 authors = ["PromptDesk <feedback@promptdesk.ai>"]
-license = "MIT License"
+license = "AGPLv3"
 readme = "README.md"
 homepage = "https://promptdesk.ai/"
 repository = "https://github.com/promptdesk/promptdesk-py"
