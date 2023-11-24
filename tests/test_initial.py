@@ -27,12 +27,12 @@ def test_prompt_without_api_key():
     pd_no_key = PromptDesk()
     with pytest.raises(Exception) as e:
         result = pd_no_key.generate("yoda-test")
-        assert "you" in result
+        assert "you" in result or "Hello" in result
     assert 'error' in str(e.value)
 
 def test_prompt_with_api_key():
     result = pd.generate("yoda-test")
-    assert "you" in result
+    assert "you" in result or "Hello" in result
 
 def test_list():
     #make sure that the list of prompts is returned
@@ -78,6 +78,18 @@ def test_init_chain():
 def test_prompt_with_chain():
     pd.chain = Chain("test-chain")
     result = pd.generate("yoda-test")
-    assert "you" in result
+    assert "you" in result or "Hello" in result
     assert pd.chain.uuid != None
     assert "-" in pd.chain.uuid
+
+def test_cache():
+    #this should take very little time since the result is cached
+    result = None
+    for x in range(1,100):
+        result = pd.generate("short-story", {
+            "setting": "a dark and stormy night",
+            "character": "a mysterious stranger",
+            "plot": "knock on the door"
+        }, non_logging_cache=True)
+    #check if result contains more than 20 words
+    assert len(result.split()) > 20

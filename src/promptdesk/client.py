@@ -5,7 +5,8 @@ import html
 import dotenv
 import os
 from promptdesk.chain import Chain
-
+import cachetools.func
+cache_ttl = os.getenv("PROMPTDESK_CACHE_TTL", 60*60)
 
 class PromptDesk:
     def __init__(self, 
@@ -19,6 +20,7 @@ class PromptDesk:
         self.api_key = api_key or os.getenv("PROMPTDESK_API_KEY")
         self.service_url = service_url or os.getenv("PROMPTDESK_SERVICE_URL", "https://app.promptdesk.ai")
         self.chain = None
+
 
     def ping(self) -> Optional[str]:
         """
@@ -65,8 +67,12 @@ class PromptDesk:
             return response.json()
         else:
             raise Exception("Failed:", response.status_code, response.text)
+        
+    @cachetools.func.ttl_cache(ttl=cache_ttl)
+    def cached_call(self, payload, headers):
+        return requests.post(f"{self.service_url}/api/magic/generate", data=payload, headers=json.loads(headers))
 
-    def generate(self, prompt_name, variables=None, chain=None, object=False):
+    def generate(self, prompt_name, variables=None, chain=None, object=False, non_logging_cache=False):
 
         payload = {
             "prompt_name": prompt_name,
@@ -88,8 +94,13 @@ class PromptDesk:
         }
 
         try:
-            response = requests.post(f"{self.service_url}/api/magic/generate", data=json.dumps(payload), headers=headers)
-            
+            response = None
+
+            if non_logging_cache:
+                response = self.cached_call(json.dumps(payload), json.dumps(headers))
+            else:
+                response = requests.post(f"{self.service_url}/api/magic/generate", data=json.dumps(payload), headers=headers)
+
             message = response.json()['message']
 
             #check if message is string

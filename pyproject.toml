@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "promptdesk"
-version = "0.2.1"
+version = "0.2.2"
 description = "PromptDesk python SDK."
 authors = ["PromptDesk <feedback@promptdesk.ai>"]
 license = "AGPLv3"
@@ -13,6 +13,7 @@ documentation = "https://promptdesk.ai/docs"
 python = "^3.8"
 requests = "^2.31.0"
 python-dotenv = "^1.0.0"
+cachetools = "^5.3.2"
 
 [build-system]
 requires = ["poetry-core"]
