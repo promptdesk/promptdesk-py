@@ -72,7 +72,7 @@ class PromptDesk:
     def cached_call(self, payload, headers):
         return requests.post(f"{self.service_url}/api/magic/generate", data=payload, headers=json.loads(headers))
 
-    def generate(self, prompt_name, variables=None, chain=None, object=False, non_logging_cache=False):
+    def generate(self, prompt_name, variables=None, chain=None, object=False, cache=False):
 
         payload = {
             "prompt_name": prompt_name,
@@ -96,7 +96,7 @@ class PromptDesk:
         try:
             response = None
 
-            if non_logging_cache:
+            if cache:
                 response = self.cached_call(json.dumps(payload), json.dumps(headers))
             else:
                 response = requests.post(f"{self.service_url}/api/magic/generate", data=json.dumps(payload), headers=headers)

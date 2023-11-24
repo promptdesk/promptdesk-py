@@ -90,6 +90,6 @@ def test_cache():
             "setting": "a dark and stormy night",
             "character": "a mysterious stranger",
             "plot": "knock on the door"
-        }, non_logging_cache=True)
+        }, cache=True)
     #check if result contains more than 20 words
     assert len(result.split()) > 20
