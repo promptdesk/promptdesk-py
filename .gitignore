@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 research/
+.DS_Store
