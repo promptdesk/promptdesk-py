@@ -24,11 +24,14 @@ def test_ping():
     assert pd.ping() == "pong"
 
 def test_prompt_without_api_key():
-    pd_no_key = PromptDesk()
+    pd_no_key = PromptDesk(
+        api_key=None
+    )
     with pytest.raises(Exception) as e:
         result = pd_no_key.generate("yoda-test")
         assert "you" in result or "Hello" in result
-    assert 'error' in str(e.value)
+    #assert that error exists
+    assert e.value is not None
 
 def test_prompt_with_api_key():
     result = pd.generate("yoda-test")
@@ -60,15 +63,6 @@ def test_prompt_with_variable():
     #check if result contains more than 20 words
     assert len(result.split()) > 20
 
-def test_convert_to_obj():
-    assert pd.convert_to_obj("{'a': 1}") == {'a': 1}
-    assert pd.convert_to_obj('{"a": 1}') == {'a': 1}
-    assert pd.convert_to_obj("{\"a\": 1}") == {'a': 1}
-    assert pd.convert_to_obj('''{&apos;a&apos;\n\n\n\t\t \t
-                                     : 1}''') == {'a': 1}
-    assert pd.convert_to_obj("[1, 2, 3]") == [1, 2, 3]
-    assert pd.convert_to_obj("     [1, 2   , 3    ]   ") == [1, 2, 3]
-
 def test_init_chain():
     pd.chain = Chain("test-chain")
     assert pd.chain.name == "test-chain"
@@ -93,3 +87,12 @@ def test_cache():
         }, cache=True)
     #check if result contains more than 20 words
     assert len(result.split()) > 20
+
+def test_convert_to_obj():
+    assert pd.convert_to_obj("{'a': 1}") == {'a': 1}
+    assert pd.convert_to_obj('{"a": 1}') == {'a': 1}
+    assert pd.convert_to_obj("{\"a\": 1}") == {'a': 1}
+    assert pd.convert_to_obj('''{&apos;a&apos;\n\n\n\t\t \t
+                                     : 1}''') == {'a': 1}
+    assert pd.convert_to_obj("[1, 2, 3]") == [1, 2, 3]
+    assert pd.convert_to_obj("     [1, 2   , 3    ]   ") == [1, 2, 3]

@@ -68,9 +68,11 @@ class PromptDesk:
         else:
             raise Exception("Failed:", response.status_code, response.text)
         
-    @cachetools.func.ttl_cache(ttl=cache_ttl)
+    @cachetools.func.ttl_cache(ttl=cache_ttl, maxsize=1000)
     def cached_call(self, payload, headers):
-        return requests.post(f"{self.service_url}/api/magic/generate", data=payload, headers=json.loads(headers))
+        payload = json.loads(payload)
+        payload['cache'] = True
+        return requests.post(f"{self.service_url}/api/generate", data=json.dumps(payload), headers=json.loads(headers))
 
     def generate(self, prompt_name, variables=None, chain=None, object=False, cache=False):
 
@@ -99,7 +101,7 @@ class PromptDesk:
             if cache:
                 response = self.cached_call(json.dumps(payload), json.dumps(headers))
             else:
-                response = requests.post(f"{self.service_url}/api/magic/generate", data=json.dumps(payload), headers=headers)
+                response = requests.post(f"{self.service_url}/api/generate", data=json.dumps(payload), headers=headers)
 
             message = response.json()['message']
 
