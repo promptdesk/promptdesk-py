@@ -63,6 +63,23 @@ def test_prompt_with_variable():
     #check if result contains more than 20 words
     assert len(result.split()) > 20
 
+def test_prompt_with_variable():
+    #make sure that a non-variable prompt is generated correctly
+    result = pd.generate("is_positive", {
+        "text": "I am super happy"
+    }, classification={
+        True: ["positive", "happy"],
+        False: ["negative", "sad"]
+    })
+    assert result == True
+    result = pd.generate("is_positive", {
+        "text": "I am super sad"
+    }, classification={
+        True: ["positive", "happy"],
+        False: ["negative", "sad"]
+    })
+    assert result == False
+
 def test_init_chain():
     pd.chain = Chain("test-chain")
     assert pd.chain.name == "test-chain"

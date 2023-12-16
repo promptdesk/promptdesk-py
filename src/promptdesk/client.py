@@ -21,7 +21,6 @@ class PromptDesk:
         self.service_url = service_url or os.getenv("PROMPTDESK_SERVICE_URL", "https://app.promptdesk.ai")
         self.chain = None
 
-
     def ping(self) -> Optional[str]:
         """
         Ping the PromptDesk service to check its availability.
@@ -74,7 +73,7 @@ class PromptDesk:
         payload['cache'] = True
         return requests.post(f"{self.service_url}/api/generate", data=json.dumps(payload), headers=json.loads(headers))
 
-    def generate(self, prompt_name, variables=None, chain=None, object=False, cache=False):
+    def generate(self, prompt_name, variables=None, chain=None, object=False, cache=False, classification=None):
 
         payload = {
             "prompt_name": prompt_name,
@@ -115,8 +114,16 @@ class PromptDesk:
 
             if object:
                 return self.convert_to_obj(generated_string)
-            else:
-                return generated_string
+            
+            if classification:
+
+                for key in classification:
+                    for value in classification[key]:
+                        if value in generated_string.strip().lower():
+                            return key
+                return None
+
+            return generated_string
 
         except requests.RequestException as e:
             # Handle connection errors
