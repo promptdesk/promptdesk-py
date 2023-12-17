@@ -115,7 +115,15 @@ class PromptDesk:
             if object:
                 return self.convert_to_obj(generated_string)
             
+            default_classification = {
+                True: ["yes", "true", "1"],
+                False: ["no", "false", "0"]
+            }
+            
             if classification:
+
+                if classification == True:
+                    classification = default_classification
 
                 for key in classification:
                     for value in classification[key]:
