@@ -1,0 +1,28 @@
+{
+    "json_1": {
+        "prompt": "Say hello."
+    },
+    "mapping_1": [
+        {
+            "sourceField": "prompt",
+            "targetField": "inputs"
+        },
+        {
+            "sourceField": "max_new_tokens",
+            "targetField": "parameters.max_new_tokens",
+            "default": 50
+        },
+        {
+            "sourceField": null,
+            "targetField": "parameters.return_full_text",
+            "default": true
+        }
+    ],
+    "result_1": {
+        "inputs": "Say hello.",
+        "parameters": {
+            "max_new_tokens": 50,
+            "return_full_text": true
+        }
+    }
+}

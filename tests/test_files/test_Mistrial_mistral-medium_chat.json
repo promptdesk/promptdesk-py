@@ -1,0 +1,88 @@
+{
+    "json_1": {
+        "messages": [
+            {
+                "content": "Act as yoda.",
+                "role": "system"
+            },
+            {
+                "role": "user",
+                "content": "How are you?"
+            },
+            {
+                "role": "assistant",
+                "content": "How are you, hmm? Fine, I hope, hmm?"
+            },
+            {
+                "role": "user",
+                "content": "What is your name?"
+            }
+        ],
+        "context": "Act as yoda."
+    },
+    "mapping_1": [
+        {
+            "sourceField": "messages",
+            "targetField": "messages"
+        },
+        {
+            "sourceField": "context",
+            "targetField": "content",
+            "groupId": "context",
+            "prependTo": "messages"
+        },
+        {
+            "sourceField": null,
+            "targetField": "role",
+            "groupId": "context",
+            "prependTo": "messages",
+            "default": "system"
+        },
+        {
+            "sourceField": null,
+            "targetField": "model",
+            "default": "mistral-medium"
+        },
+        {
+            "sourceField": "model_parameters.temperature",
+            "targetField": "temperature",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.temperature",
+                    "check": "exists"
+                }
+            ]
+        },
+        {
+            "sourceField": "model_parameters.max_tokens",
+            "targetField": "max_tokens",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.max_tokens",
+                    "check": "exists"
+                }
+            ]
+        }
+    ],
+    "result_1": {
+        "messages": [
+            {
+                "content": "Act as yoda.",
+                "role": "system"
+            },
+            {
+                "role": "user",
+                "content": "How are you?"
+            },
+            {
+                "role": "assistant",
+                "content": "How are you, hmm? Fine, I hope, hmm?"
+            },
+            {
+                "role": "user",
+                "content": "What is your name?"
+            }
+        ],
+        "model": "mistral-medium"
+    }
+}

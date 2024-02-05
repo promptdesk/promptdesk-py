@@ -1,0 +1,58 @@
+{
+    "json_1": {
+        "prompt": "Say hello.",
+        "model_parameters": {
+            "temperature": 1
+        }
+    },
+    "mapping_1": [
+        {
+            "sourceField": "prompt",
+            "targetField": "content",
+            "groupId": "context",
+            "prependTo": "messages"
+        },
+        {
+            "sourceField": null,
+            "targetField": "role",
+            "groupId": "context",
+            "prependTo": "messages",
+            "default": "system"
+        },
+        {
+            "sourceField": null,
+            "targetField": "model",
+            "default": "gpt-3.5-turbo"
+        },
+        {
+            "sourceField": "model_parameters.temperature",
+            "targetField": "temperature",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.temperature",
+                    "check": "exists"
+                }
+            ]
+        },
+        {
+            "sourceField": "model_parameters.max_tokens",
+            "targetField": "max_tokens",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.max_tokens",
+                    "check": "exists"
+                }
+            ]
+        }
+    ],
+    "result_1": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 1,
+        "messages": [
+            {
+                "content": "Say hello.",
+                "role": "system"
+            }
+        ]
+    }
+}

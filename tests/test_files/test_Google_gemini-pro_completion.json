@@ -1,0 +1,48 @@
+{
+    "json_1": {
+        "prompt": "Say hello.",
+        "model_parameters": {
+            "maxOutputTokens": 50
+        }
+    },
+    "mapping_1": [
+        {
+            "sourceField": "prompt",
+            "targetField": "contents.0.parts.0.text"
+        },
+        {
+            "sourceField": "model_parameters.maxOutputTokens",
+            "targetField": "generationConfig.maxOutputTokens",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.maxOutputTokens",
+                    "check": "exists"
+                }
+            ]
+        },
+        {
+            "sourceField": "model_parameters.temperature",
+            "targetField": "generationConfig.temperature",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.temperature",
+                    "check": "exists"
+                }
+            ]
+        }
+    ],
+    "result_1": {
+        "contents": [
+            {
+                "parts": [
+                    {
+                        "text": "Say hello."
+                    }
+                ]
+            }
+        ],
+        "generationConfig": {
+            "maxOutputTokens": 50
+        }
+    }
+}

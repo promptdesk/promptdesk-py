@@ -1,0 +1,50 @@
+{
+    "json_1": {
+        "prompt": "How are you? Keep it short."
+    },
+    "mapping_1": [
+        {
+            "sourceField": "prompt",
+            "targetField": "messages.0.content"
+        },
+        {
+            "sourceField": null,
+            "targetField": "messages.0.role",
+            "default": "user"
+        },
+        {
+            "sourceField": null,
+            "targetField": "model",
+            "default": "mistral-medium"
+        },
+        {
+            "sourceField": "model_parameters.temperature",
+            "targetField": "temperature",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.temperature",
+                    "check": "exists"
+                }
+            ]
+        },
+        {
+            "sourceField": "model_parameters.max_tokens",
+            "targetField": "max_tokens",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.max_tokens",
+                    "check": "exists"
+                }
+            ]
+        }
+    ],
+    "result_1": {
+        "messages": [
+            {
+                "content": "How are you? Keep it short.",
+                "role": "user"
+            }
+        ],
+        "model": "mistral-medium"
+    }
+}

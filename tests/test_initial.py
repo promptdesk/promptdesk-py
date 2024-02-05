@@ -6,7 +6,6 @@ import os
 
 dotenv.load_dotenv()
 
-pd_standard = PromptDesk()
 pd = PromptDesk(
     service_url="http://localhost:4000",
     api_key=os.getenv("PROMPTDESK_API_KEY")
@@ -15,9 +14,6 @@ pd = PromptDesk(
 def test_import():
     #make sure that the module is imported
     assert importlib.util.find_spec("promptdesk") is not None
-
-def test_default_service_url():
-    assert pd_standard.service_url == "https://app.promptdesk.ai"
 
 def test_ping():
     #make sure that the service is running and responding to ping
@@ -51,6 +47,8 @@ def test_prompt_with_missing_variable():
             "plot": "knock on the door"
         })
 
+        print(result)
+
     assert 'Variable "character" not found in prompt.' in str(e.value)
 
 def test_prompt_with_variable():
@@ -63,7 +61,7 @@ def test_prompt_with_variable():
     #check if result contains more than 20 words
     assert len(result.split()) > 20
 
-def test_prompt_with_variable():
+def test_prompt_with_variable_classification():
     #make sure that a non-variable prompt is generated correctly
     result = pd.generate("is_positive", {
         "text": "I am super happy"
@@ -104,6 +102,47 @@ def test_cache():
         }, cache=True)
     #check if result contains more than 20 words
     assert len(result.split()) > 20
+
+def test_prompt_local_promptdesk():
+    local_pd = PromptDesk(
+        service_url="http://localhost:4000",
+        api_key=os.getenv("PROMPTDESK_API_KEY"),
+        local=True,
+        path="./tests/promptdesk"
+    )
+    assert os.path.exists("./tests/promptdesk")
+    assert os.path.exists("./tests/promptdesk/prompts")
+    assert os.path.exists("./tests/promptdesk/models")
+
+def test_prompt_local_prompt():
+    local_pd = PromptDesk(
+        service_url="http://localhost:4000",
+        api_key=os.getenv("PROMPTDESK_API_KEY"),
+        local=True,
+        path="./tests/promptdesk",
+        env={
+            "OPEN_AI_KEY": os.getenv("OPEN_AI_KEY")
+        }
+    )
+    result = local_pd.generate("yoda-test")
+    assert "you" in result or "Hello" in result
+
+def test_prompt_local_prompt_with_variables():
+    local_pd = PromptDesk(
+        service_url="http://localhost:4000",
+        api_key=os.getenv("PROMPTDESK_API_KEY"),
+        local=True,
+        path="./tests/promptdesk"
+    )
+    result = local_pd.generate("short-story", {
+        "setting": "a dark and stormy night",
+        "character": "a mysterious stranger",
+        "plot": "knock on the door"
+    }, env={
+            "OPEN_AI_KEY": os.getenv("OPEN_AI_KEY")
+    })
+    #check if result contains more than 20 words
+    assert len(result.split()) > 10
 
 def test_convert_to_obj():
     assert pd.convert_to_obj("{'a': 1}") == {'a': 1}

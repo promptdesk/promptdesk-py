@@ -1,0 +1,34 @@
+{
+    "json_1": {
+        "prompt": "Say hello."
+    },
+    "mapping_1": [
+        {
+            "sourceField": "prompt",
+            "targetField": "prompt"
+        },
+        {
+            "sourceField": "model_parameters.temperature",
+            "targetField": "temperature",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.temperature",
+                    "check": "exists"
+                }
+            ]
+        },
+        {
+            "sourceField": "model_parameters.max_tokens",
+            "targetField": "max_tokens",
+            "conditions": [
+                {
+                    "sourceField": "model_parameters.max_tokens",
+                    "check": "exists"
+                }
+            ]
+        }
+    ],
+    "result_1": {
+        "prompt": "Say hello."
+    }
+}
