@@ -34,8 +34,8 @@ class PromptDesk:
         self.env = env
 
         #remove trailing slash from path
-        if self.path[-1] == "/":
-            self.path = self.path[:-1]
+        if self.service_url[-1] == "/":
+            self.service_url = self.service_url[:-1]
 
         #if local, create path in directory
         if self.local:
@@ -53,21 +53,26 @@ class PromptDesk:
         :return: Response text if successful, None otherwise.
         """
         try:
-            response = requests.get(f"{self.service_url}/ping")
+            headers = {
+                "Authorization": "Bearer " + self.api_key
+            }
+            response = requests.get(f"{self.service_url}/api/ping", headers=headers)
             if response.status_code == 200:
                 return response.text
             else:
-                print(f"Failed: {response.status_code} {response.text}")
-                return None
+                text = response.text
+                try:
+                    text = json.loads(text)
+                    text = text['message']
+                except:
+                    pass
+                raise Exception("Failed:", response.status_code, text)
         except requests.RequestException as e:
-            print(f"Request failed: {e}")
-            return None
+            raise Exception(f"Service not found: {e}")
+        except Exception as e:
+            raise Exception(f"An error occurred: {e}")
 
     def convert_to_obj(self, string):
-        """
-        Convert a string to an object.
-        :param string: String to be converted.
-        """
         if type(string) == dict or type(string) == list:
             return string
         string = html.unescape(string)
@@ -198,12 +203,22 @@ class PromptDesk:
             response = None
 
             if cache:
-                response = self.cached_call(json.dumps(payload), json.dumps(headers)).json()
+                response = self.cached_call(json.dumps(payload), json.dumps(headers))
             elif self.local:
                 response = self.process_local(prompt_name, variables, env)
             else:
-                response = requests.post(f"{self.service_url}/api/generate", data=json.dumps(payload), headers=headers).json()
+                response = requests.post(f"{self.service_url}/api/generate", data=json.dumps(payload), headers=headers)
 
+            if response.status_code != 200:
+                try:
+                    text = response.json()
+                    text = text['message']
+                except:
+                    text = response.text
+                raise Exception("Failed", response.status_code, text)
+
+            response = response.json()
+        
             message = response['message']
 
             #check if message is string
@@ -236,9 +251,7 @@ class PromptDesk:
             return generated_string
 
         except requests.RequestException as e:
-            # Handle connection errors
             raise Exception("Failed to connect:", e)
 
         except Exception as e:
-            # Handle other types of exceptions
-            raise Exception("An error occurred:", response.json())
+            raise Exception("An error occurred:", e, response)

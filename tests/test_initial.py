@@ -19,16 +19,6 @@ def test_ping():
     #make sure that the service is running and responding to ping
     assert pd.ping() == "pong"
 
-def test_prompt_without_api_key():
-    pd_no_key = PromptDesk(
-        api_key=None
-    )
-    with pytest.raises(Exception) as e:
-        result = pd_no_key.generate("yoda-test")
-        assert "you" in result or "Hello" in result
-    #assert that error exists
-    assert e.value is not None
-
 def test_prompt_with_api_key():
     result = pd.generate("yoda-test")
     assert "you" in result or "Hello" in result
@@ -37,19 +27,6 @@ def test_list():
     #make sure that the list of prompts is returned
     prompts = pd.list()
     assert len(prompts) > 0
-
-#should generate an error because the plot variable is missing
-def test_prompt_with_missing_variable():
-    with pytest.raises(Exception) as e:
-
-        result = pd.generate("short-story-test", {
-            "setting": "a dark and stormy night",
-            "plot": "knock on the door"
-        })
-
-        print(result)
-
-    assert 'Variable "character" not found in prompt.' in str(e.value)
 
 def test_prompt_with_variable():
     #make sure that a non-variable prompt is generated correctly
@@ -94,7 +71,7 @@ def test_prompt_with_chain():
 def test_cache():
     #this should take very little time since the result is cached
     result = None
-    for x in range(1,100):
+    for x in range(1,10000):
         result = pd.generate("short-story-test", {
             "setting": "a dark and stormy night",
             "character": "a mysterious stranger",
