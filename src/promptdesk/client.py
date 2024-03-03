@@ -33,6 +33,10 @@ class PromptDesk:
         self.path = path
         self.env = env
 
+        #remove trailing slash from path
+        if self.path[-1] == "/":
+            self.path = self.path[:-1]
+
         #if local, create path in directory
         if self.local:
             if not os.path.exists(self.path):
@@ -42,8 +46,6 @@ class PromptDesk:
                 os.makedirs(f"{self.path}/prompts")
             if not os.path.exists(f"{self.path}/models"):
                 os.makedirs(f"{self.path}/models")
-
-
 
     def ping(self) -> Optional[str]:
         """

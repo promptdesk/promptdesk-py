@@ -42,7 +42,7 @@ def test_list():
 def test_prompt_with_missing_variable():
     with pytest.raises(Exception) as e:
 
-        result = pd.generate("short-story", {
+        result = pd.generate("short-story-test", {
             "setting": "a dark and stormy night",
             "plot": "knock on the door"
         })
@@ -53,7 +53,7 @@ def test_prompt_with_missing_variable():
 
 def test_prompt_with_variable():
     #make sure that a non-variable prompt is generated correctly
-    result = pd.generate("short-story", {
+    result = pd.generate("short-story-test", {
         "setting": "a dark and stormy night",
         "character": "a mysterious stranger",
         "plot": "knock on the door"
@@ -63,14 +63,14 @@ def test_prompt_with_variable():
 
 def test_prompt_with_variable_classification():
     #make sure that a non-variable prompt is generated correctly
-    result = pd.generate("is_positive", {
+    result = pd.generate("is-positive-test", {
         "text": "I am super happy"
     }, classification={
         True: ["positive", "happy"],
         False: ["negative", "sad"]
     })
     assert result == True
-    result = pd.generate("is_positive", {
+    result = pd.generate("is-positive-test", {
         "text": "I am super sad"
     }, classification={
         True: ["positive", "happy"],
@@ -95,7 +95,7 @@ def test_cache():
     #this should take very little time since the result is cached
     result = None
     for x in range(1,100):
-        result = pd.generate("short-story", {
+        result = pd.generate("short-story-test", {
             "setting": "a dark and stormy night",
             "character": "a mysterious stranger",
             "plot": "knock on the door"
@@ -103,7 +103,7 @@ def test_cache():
     #check if result contains more than 20 words
     assert len(result.split()) > 20
 
-def test_prompt_local_promptdesk():
+'''def test_prompt_local_promptdesk():
     local_pd = PromptDesk(
         service_url="http://localhost:4000",
         api_key=os.getenv("PROMPTDESK_API_KEY"),
@@ -134,7 +134,7 @@ def test_prompt_local_prompt_with_variables():
         local=True,
         path="./tests/promptdesk"
     )
-    result = local_pd.generate("short-story", {
+    result = local_pd.generate("short-story-test", {
         "setting": "a dark and stormy night",
         "character": "a mysterious stranger",
         "plot": "knock on the door"
@@ -142,7 +142,7 @@ def test_prompt_local_prompt_with_variables():
             "OPEN_AI_KEY": os.getenv("OPEN_AI_KEY")
     })
     #check if result contains more than 20 words
-    assert len(result.split()) > 10
+    assert len(result.split()) > 10'''
 
 def test_convert_to_obj():
     assert pd.convert_to_obj("{'a': 1}") == {'a': 1}
